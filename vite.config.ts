@@ -6,5 +6,5 @@ import react from '@vitejs/plugin-react';
 // 환경변수 VITE_BASE 로도 오버라이드 가능합니다.
 export default defineConfig({
   plugins: [react()],
-  base: process.env.VITE_BASE ?? '/joeun-website/',
+  base: process.env.VITE_BASE ?? '/ext/',
 });
