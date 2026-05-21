@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout';
 import { useTheme } from './ThemeContext';
@@ -16,9 +17,25 @@ import StudioProjects from './pages/studio/Projects';
 import StudioSustainability from './pages/studio/Sustainability';
 import StudioSupport from './pages/studio/Support';
 
+const SPOTLIGHT_SELECTOR =
+  '.bento-cell, .masonry-item, .rail-card, .card, .sus-stat, .support-pill, .btn';
+
 export default function App() {
   const { theme } = useTheme();
   const isStudio = theme === 'studio';
+
+  useEffect(() => {
+    if (!isStudio) return;
+    const onMove = (e: MouseEvent) => {
+      const el = (e.target as HTMLElement | null)?.closest(SPOTLIGHT_SELECTOR) as HTMLElement | null;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      el.style.setProperty('--mx', `${e.clientX - rect.left}px`);
+      el.style.setProperty('--my', `${e.clientY - rect.top}px`);
+    };
+    window.addEventListener('mousemove', onMove, { passive: true });
+    return () => window.removeEventListener('mousemove', onMove);
+  }, [isStudio]);
 
   return (
     <Layout>

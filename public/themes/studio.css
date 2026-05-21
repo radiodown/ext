@@ -2015,3 +2015,199 @@ h1, h2, h3, h4 {
   .bignum-display { font-size: 96px; }
   .bigstat-num { font-size: 80px; }
 }
+
+/* ===========================================
+   STUDIO MOTION LAYER
+   - Aurora drift on hero/page-hero/cta
+   - Scroll-triggered reveal (animation-timeline)
+   - Accent text shimmer
+   - Mouse-follow spotlight on cells
+   =========================================== */
+
+/* ---------- Aurora drift ---------- */
+.hero::before,
+.page-hero::before,
+.cta::before {
+  animation: aurora-drift 22s ease-in-out infinite alternate;
+  transform-origin: center;
+  will-change: transform, opacity;
+}
+@keyframes aurora-drift {
+  0%   { transform: scale(1) rotate(0deg); opacity: 0.75; }
+  50%  { transform: scale(1.18) rotate(12deg); opacity: 1; }
+  100% { transform: scale(1.05) rotate(-8deg); opacity: 0.85; }
+}
+
+.hero::after,
+.cta::after {
+  animation: grid-breath 14s ease-in-out infinite alternate;
+}
+@keyframes grid-breath {
+  0%   { opacity: 1; }
+  100% { opacity: 0.5; }
+}
+
+/* ---------- Accent text shimmer ---------- */
+.flow {
+  background: linear-gradient(90deg,
+    var(--accent) 0%,
+    #ffffff 40%,
+    var(--accent) 60%,
+    var(--accent) 100%);
+  background-size: 220% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation: text-flow 5s linear infinite;
+}
+@keyframes text-flow {
+  0%   { background-position: 100% 50%; }
+  100% { background-position: -100% 50%; }
+}
+
+/* ---------- Scroll-triggered reveal ----------
+   Modern browsers (Chrome 115+, Safari 17+) — others see content normally. */
+@supports (animation-timeline: view()) {
+  .bento-cell,
+  .editorial-row,
+  .bigstat,
+  .masonry-item,
+  .rail-card,
+  .grid-3 > .card,
+  .grid-4 > .card,
+  .esg-bento .esg-card,
+  .sticky-biz-content > section,
+  .feature-tags li,
+  .support-pill {
+    animation: reveal-up linear both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 25%;
+  }
+  .bento-cell.headline   { animation-range: entry 0% cover 18%; }
+  .bento-cell.stat-1     { animation-range: entry 4% cover 22%; }
+  .bento-cell.stat-2     { animation-range: entry 8% cover 26%; }
+  .bento-cell.stat-3     { animation-range: entry 12% cover 30%; }
+  .bento-cell.service-1  { animation-range: entry 16% cover 34%; }
+  .bento-cell.service-2  { animation-range: entry 20% cover 38%; }
+  .bento-cell.service-3  { animation-range: entry 24% cover 42%; }
+  .bento-cell.featured   { animation-range: entry 28% cover 46%; }
+
+  .bignum-display,
+  .bigstat-num {
+    animation: num-bloom linear both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 35%;
+  }
+
+  .bento-headline,
+  .page-hero h1,
+  .sticky-biz-content h2,
+  .editorial-lead h2,
+  .section-head h2,
+  .cta h2 {
+    animation: hero-rise linear both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 30%;
+  }
+}
+@keyframes reveal-up {
+  from { opacity: 0; transform: translateY(36px); filter: blur(4px); }
+  to   { opacity: 1; transform: translateY(0);    filter: blur(0); }
+}
+@keyframes num-bloom {
+  from { opacity: 0; transform: translateY(20px) scale(0.92); }
+  to   { opacity: 1; transform: translateY(0)    scale(1); }
+}
+@keyframes hero-rise {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ---------- Mouse spotlight ---------- */
+.bento-cell,
+.masonry-item,
+.rail-card,
+.card,
+.sus-stat,
+.support-pill {
+  --mx: 50%;
+  --my: 50%;
+}
+.bento-cell::after,
+.masonry-item::after,
+.rail-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle 320px at var(--mx) var(--my),
+    rgba(196, 245, 71, 0.14),
+    transparent 60%
+  );
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+  z-index: 0;
+}
+.bento-cell > *,
+.masonry-item > *,
+.rail-card > * { position: relative; z-index: 1; }
+
+.bento-cell:hover::after,
+.masonry-item:hover::after,
+.rail-card:hover::after { opacity: 1; }
+
+.bento-cell.featured::after {
+  background: radial-gradient(circle 280px at var(--mx) var(--my), rgba(196,245,71,0.08), transparent 60%);
+}
+
+/* ---------- Button magnetic hover ---------- */
+.btn {
+  position: relative;
+  overflow: hidden;
+}
+.btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle 80px at var(--mx, 50%) var(--my, 50%), rgba(255, 255, 255, 0.18), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.2s;
+  pointer-events: none;
+}
+.btn:hover::before { opacity: 1; }
+
+/* ---------- Marquee smoothness ---------- */
+.marquee-track { will-change: transform; }
+
+/* ---------- Filter pop-in for masonry ---------- */
+.masonry-item {
+  animation: pop-in 0.45s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+@keyframes pop-in {
+  from { opacity: 0; transform: translateY(8px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0)    scale(1); }
+}
+
+/* ---------- Link arrow nudge ---------- */
+.bento-service-arrow { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
+.bento-cell:hover .bento-service-arrow { transform: translateX(6px); color: var(--accent); }
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .marquee-track { animation: none !important; }
+  .flow {
+    background: none;
+    -webkit-text-fill-color: var(--accent);
+    color: var(--accent);
+  }
+}

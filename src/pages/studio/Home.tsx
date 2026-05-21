@@ -31,7 +31,7 @@ export default function Home() {
               <div>
                 <h1 className="bento-headline">
                   안전을 설계하고<br />
-                  <em>신뢰</em>로 짓는다.
+                  <em className="flow">신뢰</em>로 짓는다.
                 </h1>
                 <p className="bento-sub">
                   조은건설은 27년간 기계설비와 소방시설 한 분야에만 집중해 온 종합 시공 파트너입니다.
