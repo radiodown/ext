@@ -12,8 +12,9 @@
     <script>
       (function () {
         try {
-          var theme = localStorage.getItem('joeun-theme') || 'classic';
-          var base = document.querySelector('base')?.getAttribute('href') || '/';
+          var valid = ['classic', 'sleek', 'studio'];
+          var stored = localStorage.getItem('joeun-theme');
+          var theme = valid.indexOf(stored) !== -1 ? stored : 'classic';
           var link = document.createElement('link');
           link.id = 'joeun-theme-css';
           link.rel = 'stylesheet';

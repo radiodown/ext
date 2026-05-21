@@ -12,22 +12,23 @@ const NAV_ITEMS = [
 
 function ThemeSwitch() {
   const { theme, setTheme } = useTheme();
+  const options = [
+    { value: 'classic', label: '클래식' },
+    { value: 'sleek', label: '모던' },
+    { value: 'studio', label: '스튜디오' },
+  ] as const;
   return (
     <div className="theme-switch" role="group" aria-label="테마 전환">
-      <button
-        type="button"
-        className={theme === 'classic' ? 'active' : ''}
-        onClick={() => setTheme('classic')}
-      >
-        클래식
-      </button>
-      <button
-        type="button"
-        className={theme === 'sleek' ? 'active' : ''}
-        onClick={() => setTheme('sleek')}
-      >
-        모던
-      </button>
+      {options.map((o) => (
+        <button
+          key={o.value}
+          type="button"
+          className={theme === o.value ? 'active' : ''}
+          onClick={() => setTheme(o.value)}
+        >
+          {o.label}
+        </button>
+      ))}
     </div>
   );
 }

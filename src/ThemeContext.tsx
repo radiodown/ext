@@ -1,6 +1,8 @@
 import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from 'react';
 
-export type Theme = 'classic' | 'sleek';
+export type Theme = 'classic' | 'sleek' | 'studio';
+
+const VALID_THEMES: Theme[] = ['classic', 'sleek', 'studio'];
 
 interface ThemeContextValue {
   theme: Theme;
@@ -14,7 +16,7 @@ const STORAGE_KEY = 'joeun-theme';
 function readInitial(): Theme {
   if (typeof window === 'undefined') return 'classic';
   const stored = window.localStorage.getItem(STORAGE_KEY);
-  return stored === 'sleek' ? 'sleek' : 'classic';
+  return (VALID_THEMES as string[]).includes(stored ?? '') ? (stored as Theme) : 'classic';
 }
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
